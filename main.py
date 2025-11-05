@@ -1,46 +1,36 @@
-# Type help("robodk.robolink") or help("robodk.robomath") for more information
-# Press F5 to run the script
-# Documentation: https://robodk.com/doc/en/RoboDK-API.html
-# Reference:     https://robodk.com/doc/en/PythonAPI/robodk.html
-# Note: It is not required to keep a copy of this file, your Python script is saved with your RDK project
+from robodk import robolink
 
-# Libraries
-from robodk import *      # RoboDK API
-from robolink import *    # Robot toolbox
+# Connect to RoboDK
+RDK = robolink.Robolink()
 
-import socket
-import struct
-import math
+robot = RDK.Item('UR3e', robolink.ITEM_TYPE_ROBOT)
 
-## RTDE ##
-import sys
-sys.path.append(r'C:\RoboDK\Python')
-import rtde.rtde as rtde
-import rtde.rtde_config as rtde_config
+if not robot.Valid():
+    print("Robot 'UR3e' not found. Please check the robot name in RoboDK.")
+    exit()
 
-## API provider ##
-RDK = Robolink()
+print(f"Connected to robot: {robot.Name()}")
 
-robot = RDK.Item("UR3e")
-# RTDE connection
-host = "192.168.234.130"
-con = rtde.RTDE(host, 30004)
-con.connect()
+robot.setSpeed(100)  # mm/s
+robot.setAcceleration(50)  # mm/s²
 
-if not con.send_output_setup(["target_q"],["VECTOR6D"], frequency=30):
-    sys.exit()
+home_position = [0, -90, 90, -90, -90, 0]
+position_1 = [30, -80, 80, -90, -90, 0]
+position_2 = [-30, -100, 100, -90, -90, 0]
 
-if not con.send_start():
-    sys.exit()
+print("Moving to home position...")
+robot.MoveJ(home_position)
 
-try:
-    while True:
-        state = con.receive()
-        if state is not None:
-            robot.setJoints([x*180/math.pi for x in state.target_q])
+print("Moving to position 1...")
+robot.MoveJ(position_1)
 
-except KeyboardInterrupt:
-    pass
+print("Moving to position 2...")
+robot.MoveJ(position_2)
 
-con.send_pause()
-con.disconnect()
+print("Returning to home...")
+robot.MoveJ(home_position)
+
+print("Movement complete!")
+
+current_joints = robot.Joints()
+print(f"Current joint positions (degrees): {current_joints}")
