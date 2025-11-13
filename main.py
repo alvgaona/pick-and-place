@@ -1,28 +1,26 @@
 from typing import Dict, List
-
-from robodk import robolink
+from robodk import robolink, robomath
+from time import sleep
 
 # Frame names to load from RoboDK
 FRAME_NAMES = [
-    "Ground",
-    "Table",
-    "Base Frame",
-    "workframe",
-    "UR3e Base",
-    "Block1",
-    "Block2",
-    "Block3",
-    "Block4",
-    "Gripper",
+    'Ground',
+    'Table',
+    'Base Frame',
+    'workframe',
+    'UR3e Base',
+    'Block1',
+    'Block2',
+    'Block3',
+    'Block4',
+    'Gripper',
 ]
 
 # Target names to load from RoboDK
-TARGET_NAMES = ["Home", "Aprox1", "Block1", "Obj1", "Close", "Open"]
+TARGET_NAMES = ['Home', 'Aprox1', 'Block1', 'Obj1', 'Close', 'Open']
 
 
-def read_frames(
-    rdk: robolink.Robolink, frame_names: List[str]
-) -> Dict[str, robolink.Item]:
+def read_frames(rdk: robolink.Robolink, frame_names: List[str]) -> Dict[str, robolink.Item]:
     """
     Read all frames from RoboDK and store them in a dictionary.
 
@@ -48,9 +46,7 @@ def read_frames(
     return frames
 
 
-def read_targets(
-    rdk: robolink.Robolink, target_names: List[str]
-) -> Dict[str, robolink.Item]:
+def read_targets(rdk: robolink.Robolink, target_names: List[str]) -> Dict[str, robolink.Item]:
     """
     Read all targets from RoboDK and store them in a dictionary.
 
@@ -94,13 +90,26 @@ def read_blocks(rdk: robolink.Robolink) -> Dict[str, robolink.Item]:
     """
     blocks = {}
     print("\nReading blocks...")
-    blocks["Block1"] = rdk.Item("_PIEZA_Bloque20x30x20")
-    blocks["Block2"] = rdk.Item("_PIEZA_Bloque20x30x10")
-    blocks["Block3"] = rdk.Item("_PIEZA_Bloque20x30x40")
-    blocks["Block4"] = rdk.Item("_PIEZA_Bloque20x30x30")
-
+    blocks = {
+        "Block1": rdk.Item("_PIEZA_Bloque20x30x20"),
+        "Block2": rdk.Item("_PIEZA_Bloque20x30x10"),
+        "Block3": rdk.Item("_PIEZA_Bloque20x30x40"),
+        "Block4": rdk.Item("_PIEZA_Bloque20x30x30"),
+    }
     print(f"\nLoaded {len(blocks)} blocks")
     return blocks
+
+
+def reset_blocks(
+    blocks: Dict[str, robolink.Item],
+    frames: Dict[str, robolink.Item],
+    blockPoses: Dict[str, robomath.Mat],
+):
+    print("\nResetting block positions...")
+    for name in blocks.keys():
+        blocks[name].setParent(frames[name])
+        blocks[name].setPoseAbs(blockPoses[name])
+    print("✅ Block positions reset")
 
 
 if __name__ == "__main__":
@@ -108,12 +117,10 @@ if __name__ == "__main__":
     RDK = robolink.Robolink()
 
     # Get UR3e as a robot
-    robot = RDK.Item("UR3e", robolink.ITEM_TYPE_ROBOT)
+    robot = RDK.Item('UR3e', robolink.ITEM_TYPE_ROBOT)
 
     if not robot.Valid():
-        raise ValueError(
-            "Robot 'UR3e' not found. Please check the robot name in RoboDK."
-        )
+        raise ValueError("Robot 'UR3e' not found. Please check the robot name in RoboDK.")
 
     print(f"Connected to robot: {robot.Name()}")
 
@@ -124,7 +131,7 @@ if __name__ == "__main__":
     blockPoses = {name: blocks[name].PoseAbs() for name in blocks.keys()}
 
     # Get gripper as a robot
-    gripper = RDK.Item("Zimmer HRC-03 Gripper", robolink.ITEM_TYPE_ROBOT)
+    gripper = RDK.Item('Zimmer HRC-03 Gripper', robolink.ITEM_TYPE_ROBOT)
     if not gripper.Valid():
         raise ValueError("Gripper 'Zimmer HRC-03 Gripper' not found")
 
@@ -138,14 +145,14 @@ if __name__ == "__main__":
 
     # Open gripper
     print("Opening gripper...")
-    gripper.MoveJ(targets["Open"])
+    gripper.MoveJ(targets['Open'])
     print("✅ Gripper opened")
 
     # Move robot to home
     print("Moving to Home position (from wherever the robot is)...")
     robot.setSpeedJoints(10)  # degrees/s
     robot.setAccelerationJoints(5)  # degrees/s²
-    robot.MoveJ(targets["Home"])
+    robot.MoveJ(targets['Home'])
     print("✅ Robot initialized at Home\n")
 
     # === TRAJECTORY SEQUENCE ===
@@ -157,19 +164,19 @@ if __name__ == "__main__":
     print("\n1. Moving to Aprox1 (joint movement)...")
     robot.setSpeedJoints(10)  # degrees/s
     robot.setAccelerationJoints(5)  # degrees/s²
-    robot.MoveJ(targets["Aprox1"])
+    robot.MoveJ(targets['Aprox1'])
     print("   ✅ Reached Aprox1")
 
     # 2. Move to Block1 (linear movement - really slow!)
     print("\n2. Moving to Block1 (linear movement - SLOW)...")
     robot.setSpeed(10)  # mm/s - really slow!
     robot.setAcceleration(5)  # mm/s²
-    robot.MoveL(targets["Block1"])
+    robot.MoveL(targets['Block1'])
     print("   ✅ Reached Block1")
 
     # 3. Close gripper to grab block
     print("\n3. Closing gripper to grab block...")
-    gripper.MoveJ(targets["Close"])
+    gripper.MoveJ(targets['Close'])
     print("   ✅ Gripper closed")
 
     # 4. Attach block to gripper
@@ -182,22 +189,19 @@ if __name__ == "__main__":
     robot.setSpeedJoints(10)  # degrees/s
     robot.setAccelerationJoints(5)  # degrees/s²
     robot.setPoseFrame(frames["workframe"])
-    robot.MoveJ(targets["Obj1"])
+    robot.MoveJ(targets['Obj1'])
     print("   ✅ Reached Obj1")
 
     # 6. Open gripper to release block
     print("\n6. Opening gripper to release block...")
-    gripper.MoveJ(targets["Open"])
+    gripper.MoveJ(targets['Open'])
     print("   ✅ Gripper opened")
 
     # 7. Detach block to gripper
     print("\n7. Detaching object...")
-    tcp.DetachClosest(frames["workframe"])
+    tcp.DetachClosest(frames['workframe'])
     print("   ✅ Block released")
 
     print("\n=== Trajectory Complete ===")
-    print("\nResetting block positions...")
-    for name in blocks.keys():
-        blocks[name].setParent(frames[name])
-        blocks[name].setPoseAbs(blockPoses[name])
-    print("✅ Block positions reset")
+    sleep(3)
+    reset_blocks(blocks, frames, blockPoses)
