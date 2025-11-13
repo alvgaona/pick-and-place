@@ -158,7 +158,7 @@ if __name__ == "__main__":
     # === TRAJECTORY SEQUENCE ===
     print("=== Starting Trajectory Sequence ===")
 
-    robot.setPoseFrame(frames["Block1"])
+    robot.setPoseFrame(frames['Block1'])
 
     # 1. Move to Aprox1 (joint movement)
     print("\n1. Moving to Aprox1 (joint movement)...")
@@ -199,8 +199,16 @@ if __name__ == "__main__":
 
     # 7. Detach block to gripper
     print("\n7. Detaching object...")
-    tcp.DetachClosest(frames['workframe'])
+    tcp.DetachAll(frames['workframe'])
     print("   ✅ Block released")
+    
+    # 8. Move to Aprox1 (joint movement)
+    robot.setPoseFrame(frames['Block1'])
+    print("\n8. Moving to Aprox1 (joint movement)...")
+    robot.setSpeedJoints(10)  # degrees/s
+    robot.setAccelerationJoints(5)  # degrees/s²
+    robot.MoveJ(targets['Aprox1'])
+    print("   ✅ Reached Aprox1")
 
     print("\n=== Trajectory Complete ===")
     sleep(3)
