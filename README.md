@@ -1,5 +1,8 @@
 # RoboDK Pick and Place
 
+A project for the subject Applied Robotics within the Automation & Robotics Master at
+Universidad Politécnica de Madrid.
+
 ## Prerequisites
 
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) package manager.
