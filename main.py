@@ -17,7 +17,7 @@ FRAME_NAMES = [
 ]
 
 # Target names to load from RoboDK
-TARGET_NAMES = ['Home', 'Aprox1', 'Block1', 'Obj1', 'Close', 'Open']
+TARGET_NAMES = ['Home', 'Close', 'Open',"Target Blue","Target Blue 2","Target Blue 3","Target Blue 4","Target Green","Target Green 2","Target Green 3","Target Green 4","Target Green 5","Target Green 6", "Target Red","Target Red 2","Target Red 3","Target Red 4", "Target Yellow","Target Yellow 2","Target Yellow 3","Target Red 3","Target Red 4", "Target Yellow","Target Yellow 2","Target Yellow 4"]
 
 
 def read_frames(rdk: robolink.Robolink, frame_names: List[str]) -> Dict[str, robolink.Item]:
@@ -69,7 +69,7 @@ def read_targets(rdk: robolink.Robolink, target_names: List[str]) -> Dict[str, r
             print(f"✓ {target_name}: {target.Pose()}")
         else:
             print(f"✗ {target_name}: NOT FOUND")
-            raise ValueError(f"Target '{target_name}' not found in RoboDK")
+            raise ValueError("Target '{target_name}' not found in RoboDK")
 
     print(f"\nLoaded {len(targets)} targets")
     return targets
@@ -140,8 +140,11 @@ if __name__ == "__main__":
     if not gripper.Valid():
         raise ValueError("TCP not found")
 
-    # === INITIALIZATION ===
+
+     # === INITIALIZATION ===
     print("\n=== INITIALIZATION ===")
+    
+    reset_blocks(blocks, frames, blockPoses)
 
     # Open gripper
     print("Opening gripper...")
@@ -150,29 +153,29 @@ if __name__ == "__main__":
 
     # Move robot to home
     print("Moving to Home position (from wherever the robot is)...")
-    robot.setSpeedJoints(10)  # degrees/s
-    robot.setAccelerationJoints(5)  # degrees/s²
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
     robot.MoveJ(targets['Home'])
     print("✅ Robot initialized at Home\n")
 
-    # === TRAJECTORY SEQUENCE ===
+    # === TRAJECTORY SEQUENCE BLUE ===
     print("=== Starting Trajectory Sequence ===")
 
-    robot.setPoseFrame(frames['Block1'])
+    robot.setPoseFrame(frames['Block2'])
 
-    # 1. Move to Aprox1 (joint movement)
-    print("\n1. Moving to Aprox1 (joint movement)...")
-    robot.setSpeedJoints(10)  # degrees/s
-    robot.setAccelerationJoints(5)  # degrees/s²
-    robot.MoveJ(targets['Aprox1'])
-    print("   ✅ Reached Aprox1")
+    # 1. Move to Target Blue (joint movement)
+    print("\n1. Moving to Target Blue (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.MoveJ(targets['Target Blue'])
+    print("   ✅ Reached Target Blue")
 
     # 2. Move to Block1 (linear movement - really slow!)
-    print("\n2. Moving to Block1 (linear movement - SLOW)...")
-    robot.setSpeed(10)  # mm/s - really slow!
-    robot.setAcceleration(5)  # mm/s²
-    robot.MoveL(targets['Block1'])
-    print("   ✅ Reached Block1")
+    print("\n2. Moving to Target Blue 2 (linear movement - SLOW)...")
+    robot.setSpeed(30)  # mm/s - really slow!
+    robot.setAcceleration(20)  # mm/s²
+    robot.MoveL(targets['Target Blue 2'])
+    print("   ✅ Reached Target Blue 2")
 
     # 3. Close gripper to grab block
     print("\n3. Closing gripper to grab block...")
@@ -184,31 +187,343 @@ if __name__ == "__main__":
     tcp.AttachClosest(list_objects=list(blocks.values()))
     print("   ✅ Block grabbed")
 
-    # 5. Move to Obj1 (joint movement)
-    print("\n5. Moving to Obj1 (joint movement)...")
-    robot.setSpeedJoints(10)  # degrees/s
-    robot.setAccelerationJoints(5)  # degrees/s²
-    robot.setPoseFrame(frames["workframe"])
-    robot.MoveJ(targets['Obj1'])
-    print("   ✅ Reached Obj1")
-
-    # 6. Open gripper to release block
+    # 5. Move to Target Blue (joint movement)
+    print("\n5. Moving to Target Blue (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block2"])
+    robot.MoveL(targets['Target Blue'])
+    print("   ✅ Reached Blue")
+    
+    # 6. Move to Target Blue 3 (joint movement)
+    print("\n5. Moving to Target Blue 3 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block2"])
+    robot.MoveL(targets['Target Blue 3'])
+    print("   ✅ Reached Blue")
+    
+    # 7. Move to Target Blue 4 (joint movement)
+    print("\n5. Moving to Target Blue 4 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block2"])
+    robot.MoveL(targets['Target Blue 4'])
+    print("   ✅ Reached Blue")
+    
+    # 8. Open gripper to release block
     print("\n6. Opening gripper to release block...")
     gripper.MoveJ(targets['Open'])
     print("   ✅ Gripper opened")
 
-    # 7. Detach block to gripper
+    # 9. Detach block to gripper
     print("\n7. Detaching object...")
-    tcp.DetachAll(frames['workframe'])
+    tcp.DetachAll(frames['Block2'])
     print("   ✅ Block released")
     
-    # 8. Move to Aprox1 (joint movement)
-    robot.setPoseFrame(frames['Block1'])
+    # 10. Move to Aprox1 (joint movement)
+    robot.setPoseFrame(frames['Block2'])
     print("\n8. Moving to Aprox1 (joint movement)...")
-    robot.setSpeedJoints(10)  # degrees/s
-    robot.setAccelerationJoints(5)  # degrees/s²
-    robot.MoveJ(targets['Aprox1'])
-    print("   ✅ Reached Aprox1")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.MoveJ(targets['Target Blue 3'])
+    print("   ✅ Reached Target Blue 3")
+    
+    
+    # === TRAJECTORY SEQUENCE GREEN ===
+    print("=== Starting Trajectory Sequence ===")
+
+    robot.setPoseFrame(frames['Block1'])
+
+    # 1. Move to Target Green (joint movement)
+    print("\n1. Moving to Target Green (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.MoveL(targets['Target Green'])
+    print("   ✅ Reached Target Green")
+
+    # 2. Move to Green (linear movement - really slow!)
+    print("\n2. Moving to Target Green 2 (linear movement - SLOW)...")
+    robot.setSpeed(30)  # mm/s - really slow!
+    robot.setAcceleration(20)  # mm/s²
+    robot.MoveL(targets['Target Green 2'])
+    print("   ✅ Reached Target Green 2")
+
+    # 3. Close gripper to grab block
+    print("\n3. Closing gripper to grab block...")
+    gripper.MoveJ(targets['Close'])
+    print("   ✅ Gripper closed")
+
+    # 4. Attach block to gripper
+    print("\n4. Attaching object...")
+    tcp.AttachClosest(list_objects=list(blocks.values()))
+    print("   ✅ Block grabbed")
+
+    # 5. Move to Target Green 2 (joint movement)
+    print("\n5. Moving to Target Green (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block1"])
+    robot.MoveL(targets['Target Green'])
+    
+    print("   ✅ Reached Green")
+    
+    # 6. Move to Target Green 3 (joint movement)
+    print("\n5. Moving to Target Green 3 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block1"])
+    robot.MoveL(targets['Target Green 3'])
+    print("   ✅ Reached Green")
+    
+    # 7. Move to Target Green 4 (joint movement)
+    print("\n5. Moving to Target Green 4 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block1"])
+    robot.MoveL(targets['Target Green 4'])
+    print("   ✅ Reached Green")
+    
+    # 8. Open gripper to release block
+    print("\n6. Opening gripper to release block...")
+    gripper.MoveJ(targets['Open'])
+    print("   ✅ Gripper opened")
+
+    # 9. Detach block to gripper
+    print("\n7. Detaching object...")
+    tcp.DetachAll(frames['Block1'])
+    print("   ✅ Block released")
+    
+    # 10. Move to Green (joint movement)
+    print("\n8. Moving to Green (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.MoveL(targets['Target Green 3'])
+    print("   ✅ Reached Target Green 3")
+    
+    
+        # === TRAJECTORY SEQUENCE YELLOW ===
+    print("=== Starting Trajectory Sequence ===")
+
+    robot.setPoseFrame(frames['Block4'])
+
+    # 1. Move to Target Yellow (joint movement)
+    print("\n1. Moving to Target Yellow (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.MoveL(targets['Target Yellow'])
+    print("   ✅ Reached Target Yellow")
+
+    # 2. Move to Yellow (linear movement - really slow!)
+    print("\n2. Moving to Target Yellow 2 (linear movement - SLOW)...")
+    robot.setSpeed(30)  # mm/s - really slow!
+    robot.setAcceleration(20)  # mm/s²
+    robot.MoveL(targets['Target Yellow 2'])
+    print("   ✅ Reached Target Yellow 2")
+
+    # 3. Close gripper to grab block
+    print("\n3. Closing gripper to grab block...")
+    gripper.MoveJ(targets['Close'])
+    print("   ✅ Gripper closed")
+
+    # 4. Attach block to gripper
+    print("\n4. Attaching object...")
+    tcp.AttachClosest(list_objects=list(blocks.values()))
+    print("   ✅ Block grabbed")
+
+    # 5. Move to Target Yellow (joint movement)
+    print("\n5. Moving to Target Yellow (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block4"])
+    robot.MoveL(targets['Target Yellow'])
+    print("   ✅ Reached Yellow")
+    
+    # 6. Move to Target Yellow 3 (joint movement)
+    print("\n5. Moving to Target Yellow 3 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block4"])
+    robot.MoveL(targets['Target Yellow 3'])
+    print("   ✅ Reached Yellow")
+    
+    # 7. Move to Target Yellow 4 (joint movement)
+    print("\n5. Moving to Target Yellow 4 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block4"])
+    robot.MoveL(targets['Target Yellow 4'])
+    print("   ✅ Reached Yellow")
+    
+    # 8. Open gripper to release block
+    print("\n6. Opening gripper to release block...")
+    gripper.MoveJ(targets['Open'])
+    print("   ✅ Gripper opened")
+
+    # 9. Detach block to gripper
+    print("\n7. Detaching object...")
+    tcp.DetachAll(frames['Block4'])
+    print("   ✅ Block released")
+    
+    # 10. Move to Yellow 3 (joint movement)
+    print("\n8. Moving to Yellow (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.MoveL(targets['Target Yellow 3'])
+    print("   ✅ Reached Target Yellow 3")
+    
+    
+    
+    
+    # === TRAJECTORY SEQUENCE RED ===
+    print("=== Starting Trajectory Sequence ===")
+
+    robot.setPoseFrame(frames['Block3'])
+
+    # 1. Move to Target Red (joint movement)
+    print("\n1. Moving to Target Red (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.MoveL(targets['Target Red'])
+    print("   ✅ Reached Target Red")
+
+    # 2. Move to Red (linear movement - really slow!)
+    print("\n2. Moving to Target Red 2 (linear movement - SLOW)...")
+    robot.setSpeed(30)  # mm/s - really slow!
+    robot.setAcceleration(20)  # mm/s²
+    robot.MoveL(targets['Target Red 2'])
+    print("   ✅ Reached Target Red 2")
+
+    # 3. Close gripper to grab block
+    print("\n3. Closing gripper to grab block...")
+    gripper.MoveJ(targets['Close'])
+    print("   ✅ Gripper closed")
+
+    # 4. Attach block to gripper
+    print("\n4. Attaching object...")
+    tcp.AttachClosest(list_objects=list(blocks.values()))
+    print("   ✅ Block grabbed")
+
+    # 5. Move to Target Red (joint movement)
+    print("\n5. Moving to Target Red (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block3"])
+    robot.MoveL(targets['Target Red'])
+    print("   ✅ Reached Red")
+    
+    # 6. Move to Target Red 3 (joint movement)
+    print("\n5. Moving to Target Red 3 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block3"])
+    robot.MoveL(targets['Target Red 3'])
+    print("   ✅ Reached Red")
+    
+    # 7. Move to Target Red 4 (joint movement)
+    print("\n5. Moving to Target Red 4 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block3"])
+    robot.MoveL(targets['Target Red 4'])
+    print("   ✅ Reached Red")
+    
+    # 8. Open gripper to release block
+    print("\n6. Opening gripper to release block...")
+    gripper.MoveJ(targets['Open'])
+    print("   ✅ Gripper opened")
+
+    # 9. Detach block to gripper
+    print("\n7. Detaching object...")
+    tcp.DetachAll(frames['Block3'])
+    print("   ✅ Block released")
+    
+    # 10. Move to Red 3 (joint movement)
+    print("\n8. Moving to Red (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.MoveL(targets['Target Red 3'])
+    print("   ✅ Reached Target Red 3")
+    
+    
+    # === TRAJECTORY SEQUENCE GREEN FINAL ===
+    print("=== Starting Trajectory Sequence ===")
+
+    robot.setPoseFrame(frames['Block1'])
+
+    # 1. Move to Target Green 3 (joint movement)
+    print("\n1. Moving to Target Green 3 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.MoveL(targets['Target Green 3'])
+    print("   ✅ Reached Target Green 3")
+
+    # 2. Move to Green (linear movement - really slow!)
+    print("\n2. Moving to Target Green 4 (linear movement - SLOW)...")
+    robot.setSpeed(30)  # mm/s - really slow!
+    robot.setAcceleration(20)  # mm/s²
+    robot.MoveL(targets['Target Green 4'])
+    print("   ✅ Reached Target Green 4")
+
+    # 3. Close gripper to grab block
+    print("\n3. Closing gripper to grab block...")
+    gripper.MoveJ(targets['Close'])
+    print("   ✅ Gripper closed")
+
+    # 4. Attach block to gripper
+    print("\n4. Attaching object...")
+    tcp.AttachClosest(list_objects=list(blocks.values()))
+    print("   ✅ Block grabbed")
+
+    # 5. Move to Target Green 3 (joint movement)
+    print("\n5. Moving to Target Green 3 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block1"])
+    robot.MoveL(targets['Target Green 3'])
+    print("   ✅ Reached Green")
+    
+    # 6. Move to Target Green 5 (joint movement)
+    print("\n5. Moving to Target Green 5 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block1"])
+    robot.MoveL(targets['Target Green 5'])
+    print("   ✅ Reached Green")
+    
+    # 7. Move to Target Green 6 (joint movement)
+    print("\n5. Moving to Target Green 6 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block1"])
+    robot.MoveL(targets['Target Green 6'])
+    print("   ✅ Reached Green")
+    
+    # 8. Open gripper to release block
+    print("\n6. Opening gripper to release block...")
+    gripper.MoveJ(targets['Open'])
+    print("   ✅ Gripper opened")
+
+    # 9. Detach block to gripper
+    print("\n7. Detaching object...")
+    tcp.DetachAll(frames['Block1'])
+    print("   ✅ Block released")
+    
+    # 10. Move to Green (joint movement)
+    print("\n8. Moving to Green 5 (joint movement)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.MoveL(targets['Target Green 5'])
+    print("   ✅ Reached Target Green 5")
+    
+    
+    # === TRAJECTORY SEQUENCE HOME ===
+    # Move robot to home
+    print("Moving to Home position (from wherever the robot is)...")
+    robot.setSpeedJoints(30)  # degrees/s
+    robot.setAccelerationJoints(20)  # degrees/s²
+    robot.MoveJ(targets['Home'])
+    print("✅ Robot initialized at Home\n")
 
     print("\n=== Trajectory Complete ===")
     sleep(3)
