@@ -2,6 +2,8 @@
 
 ![Python Version](https://img.shields.io/badge/python-3.13-blue)
 
+https://github.com/user-attachments/assets/10c2939d-7070-4d08-993d-b2e0a17689a2
+
 A project for the subject Applied Robotics within the Automation & Robotics Master at
 Universidad Politécnica de Madrid.
 
