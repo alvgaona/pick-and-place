@@ -13,6 +13,10 @@ FRAME_NAMES = [
     'Block2',
     'Block3',
     'Block4',
+    'Block1 Targets',
+    'Block2 Targets',
+    'Block3 Targets',
+    'Block4 Targets',
     'Gripper',
 ]
 
@@ -161,7 +165,7 @@ if __name__ == "__main__":
     # === TRAJECTORY SEQUENCE BLUE ===
     print("=== Starting Trajectory Sequence ===")
 
-    robot.setPoseFrame(frames['Block2'])
+    robot.setPoseFrame(frames['Block2 Targets'])
 
     # 1. Move to Target Blue (joint movement)
     print("\n1. Moving to Target Blue (joint movement)...")
@@ -184,14 +188,15 @@ if __name__ == "__main__":
 
     # 4. Attach block to gripper
     print("\n4. Attaching object...")
+    robot.setPoseFrame(frames["Block2"])
     tcp.AttachClosest(list_objects=list(blocks.values()))
     print("   ✅ Block grabbed")
-
+    
     # 5. Move to Target Blue (joint movement)
     print("\n5. Moving to Target Blue (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block2"])
+    robot.setPoseFrame(frames["Block2 Targets"])
     robot.MoveL(targets['Target Blue'])
     print("   ✅ Reached Blue")
     
@@ -199,7 +204,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Blue 3 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block2"])
+    robot.setPoseFrame(frames["Block2 Targets"])
     robot.MoveL(targets['Target Blue 3'])
     print("   ✅ Reached Blue")
     
@@ -207,7 +212,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Blue 4 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block2"])
+    robot.setPoseFrame(frames["Block2 Targets"])
     robot.MoveL(targets['Target Blue 4'])
     print("   ✅ Reached Blue")
     
@@ -218,11 +223,12 @@ if __name__ == "__main__":
 
     # 9. Detach block to gripper
     print("\n7. Detaching object...")
+    robot.setPoseFrame(frames["Block2"])
     tcp.DetachAll(frames['Block2'])
     print("   ✅ Block released")
     
     # 10. Move to Aprox1 (joint movement)
-    robot.setPoseFrame(frames['Block2'])
+    robot.setPoseFrame(frames['Block2 Targets'])
     print("\n8. Moving to Aprox1 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
@@ -233,7 +239,7 @@ if __name__ == "__main__":
     # === TRAJECTORY SEQUENCE GREEN ===
     print("=== Starting Trajectory Sequence ===")
 
-    robot.setPoseFrame(frames['Block1'])
+    robot.setPoseFrame(frames['Block1 Targets'])
 
     # 1. Move to Target Green (joint movement)
     print("\n1. Moving to Target Green (joint movement)...")
@@ -256,6 +262,7 @@ if __name__ == "__main__":
 
     # 4. Attach block to gripper
     print("\n4. Attaching object...")
+    robot.setPoseFrame(frames['Block1'])
     tcp.AttachClosest(list_objects=list(blocks.values()))
     print("   ✅ Block grabbed")
 
@@ -263,7 +270,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Green (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block1"])
+    robot.setPoseFrame(frames["Block1 Targets"])
     robot.MoveL(targets['Target Green'])
     
     print("   ✅ Reached Green")
@@ -272,7 +279,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Green 3 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block1"])
+    robot.setPoseFrame(frames["Block1 Targets"])
     robot.MoveL(targets['Target Green 3'])
     print("   ✅ Reached Green")
     
@@ -280,7 +287,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Green 4 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block1"])
+    robot.setPoseFrame(frames["Block1 Targets"])
     robot.MoveL(targets['Target Green 4'])
     print("   ✅ Reached Green")
     
@@ -291,6 +298,7 @@ if __name__ == "__main__":
 
     # 9. Detach block to gripper
     print("\n7. Detaching object...")
+    robot.setPoseFrame(frames["Block1"])
     tcp.DetachAll(frames['Block1'])
     print("   ✅ Block released")
     
@@ -298,6 +306,7 @@ if __name__ == "__main__":
     print("\n8. Moving to Green (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block1 Targets"])
     robot.MoveL(targets['Target Green 3'])
     print("   ✅ Reached Target Green 3")
     
@@ -305,7 +314,7 @@ if __name__ == "__main__":
         # === TRAJECTORY SEQUENCE YELLOW ===
     print("=== Starting Trajectory Sequence ===")
 
-    robot.setPoseFrame(frames['Block4'])
+    robot.setPoseFrame(frames['Block4 Targets'])
 
     # 1. Move to Target Yellow (joint movement)
     print("\n1. Moving to Target Yellow (joint movement)...")
@@ -328,6 +337,7 @@ if __name__ == "__main__":
 
     # 4. Attach block to gripper
     print("\n4. Attaching object...")
+    robot.setPoseFrame(frames['Block4'])
     tcp.AttachClosest(list_objects=list(blocks.values()))
     print("   ✅ Block grabbed")
 
@@ -335,7 +345,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Yellow (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block4"])
+    robot.setPoseFrame(frames["Block4 Targets"])
     robot.MoveL(targets['Target Yellow'])
     print("   ✅ Reached Yellow")
     
@@ -343,7 +353,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Yellow 3 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block4"])
+    robot.setPoseFrame(frames["Block4 Targets"])
     robot.MoveL(targets['Target Yellow 3'])
     print("   ✅ Reached Yellow")
     
@@ -351,7 +361,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Yellow 4 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block4"])
+    robot.setPoseFrame(frames["Block4 Targets"])
     robot.MoveL(targets['Target Yellow 4'])
     print("   ✅ Reached Yellow")
     
@@ -362,6 +372,7 @@ if __name__ == "__main__":
 
     # 9. Detach block to gripper
     print("\n7. Detaching object...")
+    robot.setPoseFrame(frames["Block4"])
     tcp.DetachAll(frames['Block4'])
     print("   ✅ Block released")
     
@@ -369,6 +380,7 @@ if __name__ == "__main__":
     print("\n8. Moving to Yellow (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames["Block4 Targets"])
     robot.MoveL(targets['Target Yellow 3'])
     print("   ✅ Reached Target Yellow 3")
     
@@ -378,7 +390,7 @@ if __name__ == "__main__":
     # === TRAJECTORY SEQUENCE RED ===
     print("=== Starting Trajectory Sequence ===")
 
-    robot.setPoseFrame(frames['Block3'])
+    robot.setPoseFrame(frames['Block3 Targets'])
 
     # 1. Move to Target Red (joint movement)
     print("\n1. Moving to Target Red (joint movement)...")
@@ -401,6 +413,7 @@ if __name__ == "__main__":
 
     # 4. Attach block to gripper
     print("\n4. Attaching object...")
+    robot.setPoseFrame(frames['Block3'])
     tcp.AttachClosest(list_objects=list(blocks.values()))
     print("   ✅ Block grabbed")
 
@@ -408,7 +421,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Red (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block3"])
+    robot.setPoseFrame(frames["Block3 Targets"])
     robot.MoveL(targets['Target Red'])
     print("   ✅ Reached Red")
     
@@ -416,7 +429,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Red 3 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block3"])
+    robot.setPoseFrame(frames["Block3 Targets"])
     robot.MoveL(targets['Target Red 3'])
     print("   ✅ Reached Red")
     
@@ -424,7 +437,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Red 4 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block3"])
+    robot.setPoseFrame(frames["Block3 Targets"])
     robot.MoveL(targets['Target Red 4'])
     print("   ✅ Reached Red")
     
@@ -435,6 +448,7 @@ if __name__ == "__main__":
 
     # 9. Detach block to gripper
     print("\n7. Detaching object...")
+    robot.setPoseFrame(frames['Block3'])
     tcp.DetachAll(frames['Block3'])
     print("   ✅ Block released")
     
@@ -442,6 +456,7 @@ if __name__ == "__main__":
     print("\n8. Moving to Red (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames['Block3 Targets'])
     robot.MoveL(targets['Target Red 3'])
     print("   ✅ Reached Target Red 3")
     
@@ -449,7 +464,7 @@ if __name__ == "__main__":
     # === TRAJECTORY SEQUENCE GREEN FINAL ===
     print("=== Starting Trajectory Sequence ===")
 
-    robot.setPoseFrame(frames['Block1'])
+    robot.setPoseFrame(frames['Block1 Targets'])
 
     # 1. Move to Target Green 3 (joint movement)
     print("\n1. Moving to Target Green 3 (joint movement)...")
@@ -472,6 +487,7 @@ if __name__ == "__main__":
 
     # 4. Attach block to gripper
     print("\n4. Attaching object...")
+    robot.setPoseFrame(frames['Block1'])
     tcp.AttachClosest(list_objects=list(blocks.values()))
     print("   ✅ Block grabbed")
 
@@ -479,7 +495,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Green 3 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block1"])
+    robot.setPoseFrame(frames["Block1 Targets"])
     robot.MoveL(targets['Target Green 3'])
     print("   ✅ Reached Green")
     
@@ -487,7 +503,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Green 5 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block1"])
+    robot.setPoseFrame(frames["Block1 Targets"])
     robot.MoveL(targets['Target Green 5'])
     print("   ✅ Reached Green")
     
@@ -495,7 +511,7 @@ if __name__ == "__main__":
     print("\n5. Moving to Target Green 6 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
-    robot.setPoseFrame(frames["Block1"])
+    robot.setPoseFrame(frames["Block1 Targets"])
     robot.MoveL(targets['Target Green 6'])
     print("   ✅ Reached Green")
     
@@ -506,6 +522,7 @@ if __name__ == "__main__":
 
     # 9. Detach block to gripper
     print("\n7. Detaching object...")
+    robot.setPoseFrame(frames['Block1'])
     tcp.DetachAll(frames['Block1'])
     print("   ✅ Block released")
     
@@ -513,6 +530,7 @@ if __name__ == "__main__":
     print("\n8. Moving to Green 5 (joint movement)...")
     robot.setSpeedJoints(30)  # degrees/s
     robot.setAccelerationJoints(20)  # degrees/s²
+    robot.setPoseFrame(frames['Block1 Targets'])
     robot.MoveL(targets['Target Green 5'])
     print("   ✅ Reached Target Green 5")
     
